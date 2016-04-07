@@ -20,7 +20,27 @@ var canvas = document.querySelector('#scope');
 var canvasCtx = canvas.getContext("2d");
 var intendedWidth = document.querySelector('.wrapper').clientWidth;
 canvas.setAttribute('width',intendedWidth);
-
+//general purpose draw() function
+function draw(target_canvas) {
+    drawVisual = requestAnimationFrame(draw);
+    analyser.getByteTimeDomainData(dataArray);
+    target_canvas.fillStyle = 'rgb(200, 200, 200)'; //Foreground
+    target_canvas.fillRect(0, 0, WIDTH, HEIGHT);
+    target_canvas.lineWidth = 2;
+    target_canvas.strokeStyle = 'rgb(0, 0, 0)'; //Line color
+    target_canvas.beginPath();
+    var sliceWidth = WIDTH * 1.0 / bufferLength;
+    var x = 0;
+    for(var i = 0; i < bufferLength; i++) {
+      var v = dataArray[i] / 128.0;
+      var y = v * HEIGHT/2;
+      if(i === 0) {target_canvas.moveTo(x, y);}
+      else {target_canvas.lineTo(x, y);}
+      x += sliceWidth;
+    }
+    target_canvas.lineTo(canvas.width, canvas.height/2);
+    target_canvas.stroke();
+};
 //main block for RECORDING INPUT SIGNAL
 if (navigator.getUserMedia) {
    console.log('getUserMedia supported.');
@@ -42,38 +62,5 @@ function visualize() {
   var bufferLength = analyser.fftSize;
   var dataArray = new Uint8Array(bufferLength);
   canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-  function draw() {
-      drawVisual = requestAnimationFrame(draw);
-      analyser.getByteTimeDomainData(dataArray);
-      canvasCtx.fillStyle = 'rgb(200, 200, 200)'; //Foreground
-      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-      canvasCtx.lineWidth = 2;
-      canvasCtx.strokeStyle = 'rgb(0, 0, 0)'; //Line color
-      canvasCtx.beginPath();
-      var sliceWidth = WIDTH * 1.0 / bufferLength;
-      var x = 0;
-      for(var i = 0; i < bufferLength; i++) {
-        var v = dataArray[i] / 128.0;
-        var y = v * HEIGHT/2;
-        if(i === 0) {canvasCtx.moveTo(x, y);}
-        else {canvasCtx.lineTo(x, y);}
-        x += sliceWidth;
-      }
-      canvasCtx.lineTo(canvas.width, canvas.height/2);
-      canvasCtx.stroke();
-  };
-  draw();
-}
-
-mute.onclick = voiceMute;
-function voiceMute() {
-  if(mute.id == "") {
-    gainNode.gain.value = 0;
-    mute.id = "activated";
-    mute.innerHTML = "Unmute";
-  } else {
-    gainNode.gain.value = 1;
-    mute.id = "";
-    mute.innerHTML = "Mute";
-  }
+  draw(canvasCtx);
 }
