@@ -38,21 +38,17 @@ if (navigator.getUserMedia) {
 function visualize() {
   WIDTH = canvas.width;
   HEIGHT = canvas.height;
-  var visualSetting = visualSelect.value;
-  console.log(visualSetting);
-  if(visualSetting == "sinewave") {
-    analyser.fftSize = 2048;
-    var bufferLength = analyser.fftSize;
-    console.log(bufferLength);
-    var dataArray = new Uint8Array(bufferLength);
-    canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-    function draw() {
+  analyser.fftSize = 2048;
+  var bufferLength = analyser.fftSize;
+  var dataArray = new Uint8Array(bufferLength);
+  canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+  function draw() {
       drawVisual = requestAnimationFrame(draw);
       analyser.getByteTimeDomainData(dataArray);
-      canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+      canvasCtx.fillStyle = 'rgb(200, 200, 200)'; //Foreground
       canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
       canvasCtx.lineWidth = 2;
-      canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+      canvasCtx.strokeStyle = 'rgb(0, 0, 0)'; //Line color
       canvasCtx.beginPath();
       var sliceWidth = WIDTH * 1.0 / bufferLength;
       var x = 0;
@@ -65,9 +61,8 @@ function visualize() {
       }
       canvasCtx.lineTo(canvas.width, canvas.height/2);
       canvasCtx.stroke();
-    };
-    draw();
-  } 
+  };
+  draw();
 }
 
 mute.onclick = voiceMute;

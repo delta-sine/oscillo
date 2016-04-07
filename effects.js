@@ -44,3 +44,20 @@ function voiceChange() {
 // event listeners to change visualize and voice settings
 visualSelect.onchange = function(){window.cancelAnimationFrame(drawVisual); visualize();}
 voiceSelect.onchange = function() {voiceChange();}
+
+//distortion.connect(biquadFilter);
+//biquadFilter.connect(convolver);
+//convolver.connect(gainNode);
+
+mute.onclick = voiceMute;
+function voiceMute() {
+  if(mute.id == "") {
+    gainNode.gain.value = 0;
+    mute.id = "activated";
+    mute.innerHTML = "Unmute";
+  } else {
+    gainNode.gain.value = 1;
+    mute.id = "";
+    mute.innerHTML = "Mute";
+  }
+}
