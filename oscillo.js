@@ -23,18 +23,14 @@ if(navigator.mozApps) {
 else {button.style.display = "none";}
 
 //Below is your custom application script
-  // fork getUserMedia for multiple browser versions, for those need prefixes
+
 navigator.getUserMedia = (navigator.getUserMedia ||
                           navigator.webkitGetUserMedia ||
                           navigator.mozGetUserMedia ||
                           navigator.msGetUserMedia);
-// set up forked web audio context, for multiple browsers
-// window. is needed otherwise Safari explodes
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 var voiceSelect = document.getElementById("voice");
-var source;
-var stream;
-// grab the mute button to use below
+var source, stream;
 var mute = document.querySelector('.mute');
 //set up the different audio nodes we will use for the app
 var analyser = audioCtx.createAnalyser();
@@ -45,8 +41,6 @@ var distortion = audioCtx.createWaveShaper();
 var gainNode = audioCtx.createGain();
 var biquadFilter = audioCtx.createBiquadFilter();
 var convolver = audioCtx.createConvolver();
-// distortion curve for the waveshaper, thanks to Kevin Ennis
-// http://stackoverflow.com/questions/22312841/waveshaper-node-in-webaudio-how-to-emulate-distortion
 function makeDistortionCurve(amount) {
   var k = typeof amount === 'number' ? amount : 50,
     n_samples = 44100,
@@ -60,7 +54,6 @@ function makeDistortionCurve(amount) {
   }
   return curve;
 };
-// grab audio track via XHR for convolver node
 var soundSource, concertHallBuffer;
 ajaxRequest = new XMLHttpRequest();
 ajaxRequest.open('GET', 'http://mdn.github.io/voice-change-o-matic/audio/concert-crowd.ogg', true);
@@ -78,7 +71,7 @@ ajaxRequest.onload = function() {
 }
 ajaxRequest.send();
 // set up canvas context for visualizer
-var canvas = document.querySelector('.visualizer');
+var canvas = document.querySelector('#scope');
 var canvasCtx = canvas.getContext("2d");
 var intendedWidth = document.querySelector('.wrapper').clientWidth;
 canvas.setAttribute('width',intendedWidth);
