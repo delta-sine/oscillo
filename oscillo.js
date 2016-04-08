@@ -46,10 +46,10 @@ function draw() {
 
     drawVisual = requestAnimationFrame(draw);
     analyser.getByteTimeDomainData(dataArray);
-    canvasCtx.fillStyle = 'rgb(200, 200, 200)'; //Foreground
+    canvasCtx.fillStyle = 'rgb(0, 0, 0)'; //Foreground
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
     canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = 'rgb(0, 0, 0)'; //Line color
+    canvasCtx.strokeStyle = 'rgb(124,252,0)'; //Line color
     canvasCtx.beginPath();
     var sliceWidth = WIDTH * 1.0 / analyser.fftSize;
     var x = 0;
