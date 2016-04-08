@@ -48,7 +48,7 @@ function draw() {
     analyser.getByteTimeDomainData(dataArray);
     canvasCtx.fillStyle = 'rgb(0, 0, 0)'; //Foreground
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-    canvasCtx.lineWidth = 2;
+    canvasCtx.lineWidth = 1.5;
     canvasCtx.strokeStyle = 'rgb(124,252,0)'; //Line color
     canvasCtx.beginPath();
     var sliceWidth = WIDTH * 1.0 / analyser.fftSize;
